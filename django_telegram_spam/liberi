@@ -1,0 +1,99 @@
+pip install Django
+pip install Pyrogram
+pip install scheduler
+pip install tronpy
+pip install Pillow
+
+python -m pip install celery
+sudo apt update
+
+sudo nano /etc/systemd/system/gunicorn.socket
+
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=viktortanchik
+Group=viktortanchik
+WorkingDirectory=/home/viktortanchik/django_telegram_spam_02/django_telegram_spam
+ExecStart=/home/viktortanchik/django_telegram_spam_02/venv/bin/gunicorn --
+access-logfile - --workers 3 --bind unix:/home/viktortanchik/django_telegram_spam_02/django_telegram_spam/django_telegram_spam.sock django_telegram_spam.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo ln -s /etc/nginx/sites-available/django_telegram_spam /etc/nginx/sites-enabled
+
+'''
+
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=viktortanchik
+Group=www-data
+WorkingDirectory=/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam
+ExecStart=/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          django_telegram_spam.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+'''
+'''
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=viktortanchik
+Group=viktortanchik
+WorkingDirectory=/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam
+ExecStart=/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/venv/bin/gunicorn --
+access-logfile - --workers 3 --bind unix:/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/myproject.sock myproject.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+'''
+        location /static/ {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                alias /home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/static;
+        }
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                proxy_pass http://127.0.0.1:8080/;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $host;
+        }
+
+'''
+
+server {
+    listen 80;
+    server_name 35.193.90.224;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+sudo ln -s /etc/nginx/sites-available/django_telegram_spam /etc/nginx/sites-enabled
+           ├─1201 /home/viktortanchik/tg_dj_spam/django_telegram_spam_02/venv/bin/python3.10 /home/viktortanchik/tg_dj_spam/django_telegram_spam_02/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock djan
+'''

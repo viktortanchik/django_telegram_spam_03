@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+<p style="color:#e1e1bb;" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">User is logged in :)</p>
+        <p style="color:#e1e1bb;" >Username -->  {{ request.user.username }}</p>
+
+<div class="container">
+    <div class="row align-items-center justify-content-center" style="height:60vh;">
+         <div>
+<div class="col-10 offset-1 text-center ">
+<p class="text-center d-flex align-self-center" style="color:#e1e1bb;">
+
+
+
+         <form action="" method="post" enctype="multipart/form-data" style="color:#e1e1bb;">
+         {% csrf_token %}
+             text--->{{ form.text }}
+             <p><h3>             text--->{{ news_show.text}}</h3></p>
+             <p><h3>             balance--->{{ news_show.balance}}</h3></p>
+             <p><h3>             wallet--->{{ news_show.wallet}}</h3></p>
+             <p><h3>             tariff--->{{ news_show.tariff}}</h3></p>
+             <input type="submit" value="Update" class="btn btn-secondary" >
+            <p></p>
+            <a  href="{% url 'get_wallet'  request.user.id %}> " > Get wallet</a>
+                <p></p>
+
+            <a  href="{% url 'logout' %} " >logout</a>
+
+         </form>
+
+
+
+    {% else %}
+        <p style="color:#e1e1bb;" >User is not logged in :(</p>
+    <h1 style="color:#e1e1bb;">Log-in</h1>
+
+
+    <p>Please, use the following form to log-in. If you don't have an account <a  href="{% url 'register' %}">register here</a></p>
+    <form action="." method="post">
+        <a style="color:#e1e1bb;"> username {{ form.username }}</a>
+        <p>
+         <a style="color:#e1e1bb;"> password{{ form.password }}</a>
+
+        </p>
+        {% csrf_token %}
+        <p><input type="submit" value="Log-in"></p>
+    </form>
+    {% endif %}
+{% endblock %}

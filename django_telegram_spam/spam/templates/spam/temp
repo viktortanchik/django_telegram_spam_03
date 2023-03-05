@@ -1,0 +1,14 @@
+
+
+
+
+                        <p></p>
+                        <p>{{ form.texts }}</p>
+                       <a>Введите адрес получателя (@username)</a>
+                        <p>{{ form.contact }}</p>
+                        <p>{{ form.gender }}</p>
+                        <p>{{ form.hotel_Main_Img }}</p>
+
+                        <div>
+                        <button type="submit" class="btn btn-primary">Send spam</button>
+                         </div>

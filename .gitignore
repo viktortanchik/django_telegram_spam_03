@@ -1,0 +1,9 @@
+*.pyc
+*.pyo
+pycache/
+.DS_Store
+.venv/
+.pytest_cache/
+*.log
+.coverage
+
