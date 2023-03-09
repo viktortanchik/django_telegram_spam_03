@@ -186,7 +186,8 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
 
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            print(f'Время до следующего выполнения >>>{schedule.idle_seconds()}')
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -202,7 +203,7 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
 
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -216,7 +217,9 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
         schedule.every().wednesday.at(time_).do(job_tg_img, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
+            print(f'Время до следующего выполнения >>>{schedule.idle_seconds()}')
+
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -229,7 +232,7 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
         schedule.every().thursday.at(time_).do(job_tg_img, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -242,7 +245,7 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
         schedule.every().friday.at(time_).do(job_tg_img, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -255,7 +258,7 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
         schedule.every().saturday.at(time_).do(job_tg_img, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -268,7 +271,7 @@ def main_schedule_img(tepm_date,time_, text, phon, username,img):
         schedule.every().sunday.at(time_).do(job_tg_img, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -288,7 +291,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
 
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -299,7 +302,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
 
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -308,7 +311,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
         schedule.every().wednesday.at(time_).do(job_tg_text, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -324,7 +327,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
         schedule.every().friday.at(time_).do(job_tg_text, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -332,7 +335,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
         schedule.every().saturday.at(time_).do(job_tg_text, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)
@@ -340,7 +343,7 @@ def main_schedule_text(tepm_date,time_, text, phon, username):
         schedule.every().sunday.at(time_).do(job_tg_text, name=temp_text)
         while True:
             schedule.run_pending()
-            print(schedule.get_jobs())
+            #print(schedule.get_jobs())
             if len(schedule.get_jobs()) < 1:
                 break
             time.sleep(1)

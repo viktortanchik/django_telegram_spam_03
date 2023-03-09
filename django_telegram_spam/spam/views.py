@@ -129,31 +129,37 @@ def handle_uploaded_file(f):
 
 def send_mess(post,data):
     if len(str(post.file)) > 0:
-        img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(post.file)
+        #img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(post.file)
+        img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(post.file)
 
         if (data.get('days_1') != None):
-            t1 = Thread(target=main_schedule_img, args=(1, data['time_send_days_1'], data['texts'], data['gender'], data['contact'], img,))
-            t1.start()
+            Process(target=main_schedule_img, args=(1, data['time_send_days_1'], data['texts'], data['account'], data['contact'], img,)).start()
+
+            # t1 = Thread(target=main_schedule_img, args=(1, data['time_send_days_1'], data['texts'], data['account'], data['contact'], img,))
+            # t1.start()
         if (data.get('days_2') != None):
-            t1 = Thread(target=main_schedule_img, args=(2, data['time_send_days_2'], data['texts'], data['gender'], data['contact'], img,))
-            t1.start()
+            Process(target=main_schedule_img, args=(2, data['time_send_days_2'], data['texts'], data['account'], data['contact'], img,)).start()
+
+            # t1 = Thread(target=main_schedule_img, args=(2, data['time_send_days_2'], data['texts'], data['gender'], data['contact'], img,))
+            # t1.start()
         if (data.get('days_3') != None):
-            t1 = Thread(target=main_schedule_img, args=(3, data['time_send_days_3'], data['texts'], data['gender'], data['contact'], img,))
-            t1.start()
+            Process(target=main_schedule_img, args=(3, data['time_send_days_3'], data['texts'], data['account'], data['contact'], img,)).start()
+            # t1 = Thread(target=main_schedule_img, args=(3, data['time_send_days_3'], data['texts'], data['gender'], data['contact'], img,))
+            # t1.start()
         if (data.get('days_4') != None):
             #t1 = Thread(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], img,))
-            Process(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], img,)).start()
+            Process(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['account'], data['contact'], img,)).start()
             # t1 = Process(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], img,))
             # t1.start()
             #t1.join()
         if (data.get('days_5') != None):
-            t1 = Thread(target=main_schedule_img, args=(5, data['time_send_days_5'], data['texts'], data['gender'], data['contact'], img,))
+            t1 = Thread(target=main_schedule_img, args=(5, data['time_send_days_5'], data['texts'], data['account'], data['contact'], img,))
             t1.start()
         if (data.get('days_6') != None):
-            t1 = Thread(target=main_schedule_img, args=(6, data['time_send_days_6'], data['texts'], data['gender'], data['contact'], img,))
+            t1 = Thread(target=main_schedule_img, args=(6, data['time_send_days_6'], data['texts'], data['account'], data['contact'], img,))
             t1.start()
         if (data.get('days_7') != None):
-            t1 = Thread(target=main_schedule_img, args=(7, data['time_send_days_7'], data['texts'], data['gender'], data['contact'], img,))
+            t1 = Thread(target=main_schedule_img, args=(7, data['time_send_days_7'], data['texts'], data['account'], data['contact'], img,))
             t1.start()
 
         # img = '/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/media/'+str(post.file)
@@ -169,29 +175,40 @@ def send_mess(post,data):
     else:
 
         if (data.get('days_1') != None):
-            t1 = Thread(target=main_schedule_text, args=(1, data['time_send_days_1'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text, args=(1, data['time_send_days_1'], data['texts'], data['account'], data['contact'], )).start()
+
+            # t1 = Thread(target=main_schedule_text, args=(1, data['time_send_days_1'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         if (data.get('days_2') != None):
-            t1 = Thread(target=main_schedule_text, args=(2, data['time_send_days_2'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text, args=(2, data['time_send_days_2'], data['texts'], data['account'], data['contact'], )).start()
+            # t1 = Thread(target=main_schedule_text, args=(2, data['time_send_days_2'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         if (data.get('days_3') != None):
-            t1 = Thread(target=main_schedule_text, args=(3, data['time_send_days_3'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text,
+                    args=(3, data['time_send_days_3'], data['texts'], data['account'], data['contact'],)).start()
+            # t1 = Thread(target=main_schedule_text, args=(3, data['time_send_days_3'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         if (data.get('days_4') != None):
             #t1 = Thread(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], img,))
-            Process(target=main_schedule_text, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], )).start()
+            Process(target=main_schedule_text, args=(4, data['time_send_days_4'], data['texts'], data['account'], data['contact'], )).start()
             # t1 = Process(target=main_schedule_img, args=(4, data['time_send_days_4'], data['texts'], data['gender'], data['contact'], img,))
             # t1.start()
             #t1.join()
         if (data.get('days_5') != None):
-            t1 = Thread(target=main_schedule_text, args=(5, data['time_send_days_5'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text,
+                    args=(5, data['time_send_days_5'], data['texts'], data['account'], data['contact'],)).start()
+            # t1 = Thread(target=main_schedule_text, args=(5, data['time_send_days_5'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         if (data.get('days_6') != None):
-            t1 = Thread(target=main_schedule_text, args=(6, data['time_send_days_6'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text,
+                    args=(6, data['time_send_days_6'], data['texts'], data['account'], data['contact'],)).start()
+            # t1 = Thread(target=main_schedule_text, args=(6, data['time_send_days_6'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         if (data.get('days_7') != None):
-            t1 = Thread(target=main_schedule_text, args=(7, data['time_send_days_7'], data['texts'], data['gender'], data['contact'], ))
-            t1.start()
+            Process(target=main_schedule_text,
+                    args=(7, data['time_send_days_7'], data['texts'], data['account'], data['contact'],)).start()
+            # t1 = Thread(target=main_schedule_text, args=(7, data['time_send_days_7'], data['texts'], data['gender'], data['contact'], ))
+            # t1.start()
         print('send mess')
 
 
@@ -208,6 +225,8 @@ def spam_pro(request):
                 #print(f'data===>{data["date_send"]}<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
                 post.user = request.user
                 post.save()
+                print(f'POST ++++ >> {post.id}')
+                print(f'POST ++++ >> {post.texts}')
                 try:
                     # print(f'====>>{str(post.file)}')
                     # print(f'=len=>>{len(str(post.file))}')

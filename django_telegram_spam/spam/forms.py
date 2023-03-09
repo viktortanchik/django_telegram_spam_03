@@ -19,7 +19,9 @@ class SubscriberForm(forms.ModelForm):
 
         #fields = ['__all__']
         widgets = {
-            'gender': forms.RadioSelect(),
+            'account': forms.RadioSelect(),
+            'status_spam': forms.RadioSelect(),
+            'status_spam_repeat': forms.RadioSelect(),
 
         }
         #'hotel_Main_Img':forms.ImageField()

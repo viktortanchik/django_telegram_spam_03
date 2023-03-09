@@ -46,12 +46,30 @@ class Subscriber(models.Model):
     days_6 = models.BooleanField()
     days_7 = models.BooleanField()
     texts = models.TextField(blank=False)
-    TYPE_SELECT = (
+
+    TYPE_SELECT_account = (
         ('0', 'Indonesia account 1'),
         ('1', 'Vietnam account'),
         ('2', 'Indonesia account 2'),
     )
-    gender = models.CharField(max_length=20, choices=TYPE_SELECT,blank=False,default=1)
+    TYPE_SELECT_spam_progress = (
+        ('0', 'spam disabled'),
+        ('1', 'spam enabled '),
+    )
+    TYPE_SELECT_spam_repeat = (
+        ('0', 'Execute once'),
+        ('1', 'Repeat all the time'),
+    )
+    TYPE_SELECT_spam_temp = (
+        ('8', 'today it was shipped'),
+        ('0', 'didnt send it today'),
+    )
+    account = models.CharField(max_length=20, choices=TYPE_SELECT_account,blank=False,default=1)
+    status_spam = models.CharField(max_length=20, choices=TYPE_SELECT_spam_progress,blank=True,default=1)
+    status_spam_repeat = models.CharField(max_length=20, choices=TYPE_SELECT_spam_repeat,blank=False,default=0)
+    #status_spam_temp = models.CharField(max_length=20, choices=TYPE_SELECT_spam_temp,blank=True,default=8)
+    status_spam_temp =  models.CharField(max_length=11,blank=True,default='2000-00-00')
+
     contact = models.CharField(max_length=128,blank=True)
     file = models.ImageField(upload_to='images/',blank=True)
     #date_send = models.DateField(default=timezone.now)
