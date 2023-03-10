@@ -1,7 +1,9 @@
 import asyncio
 import sqlite3
 import datetime
+import time
 from multiprocessing import Process
+from tg import job_tg_img,job_tg_text
 
 
 # Подключаемся к базе данных
@@ -43,6 +45,21 @@ def update_status_spam_temp(id, new_status):
 
     # закрываем соединение с базой данных
     conn.close()
+
+def update_column_value(id, column_name, new_value):
+    # открываем соединение с базой данных
+    conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    c = conn.cursor()
+
+    # обновляем значение столбца для заданного ряда
+    c.execute(f"UPDATE spam_subscriber SET {column_name} = ? WHERE id = ?", (new_value, id))
+
+    # сохраняем изменения
+    conn.commit()
+
+    # закрываем соединение с базой данных
+    conn.close()
+#update_column_value(7,'days_5',0)
 def main():
     # создаем объект datetime для текущей даты
     today = datetime.datetime.today()
@@ -52,7 +69,7 @@ def main():
         day_of_week=1
     else:
         day_of_week=day_of_week+1
-    print("Номер дня недели:", day_of_week)
+    #print("Номер дня недели:", day_of_week)
 
     tasks = get_task()
     #print(get_task())
@@ -61,111 +78,47 @@ def main():
         current_date = datetime.datetime.now().date()
         now = datetime.datetime.now()
         #print(task['time_send_days_3'][:5]  ,'  ',  now.strftime("%H:%M"))
-        print(f"file >> {task}")
-
+        #print(f"file >> {task}")
+        for day in range(1,8):
+            day=str(day)
+            #print(f'day>>{day}')
         #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_1']==1) and (task['time_send_days_1'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-                img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(task['file'])
-                Process(target=main_schedule_img, args=(
-                1, task['time_send_days_1'], task['texts'], task['account'], task['contact'], img,)).start()
+            if (task['days_'+day]==1) and (task['time_send_days_'+day][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
+                # если нужно отправить только один раз
+                if int(task['status_spam_repeat'])==0:
+                    # изменяем  значения на 0
 
-            else:
-                print('ОТПРАВКА ON IMG ')
-                Process(target=main_schedule_text,
-                        args=(1, task['time_send_days_1'], task['texts'], task['account'], task['contact'],)).start()
+                    update_column_value(task['id'],'days_'+day,0)
+                    task['days_'+day]=0
+                    #проверяем если есть еще отправка в течении недели, если нет то отключаем отправку
+                    if (task['days_1']== 0) and (task['days_2']== 0) and (task['days_3']== 0) and (task['days_4']== 0) and (task['days_5']== 0) and (task['days_6']== 0) and (task['days_7']== 0):
+                        update_status_spam(task['id'], 0)
+                        print(f'spam disabled>>{task["id"]} ')
+                # изменяем для указания что мы сегодня уже отправляли это сообщения
+                #img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(task['file'])
+                img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(task['file'])
+                temp_text = {'text_mess': task['texts'],
+                             'phon': task["account"],
+                             'username': task['contact'],
+                             'img_name': img
+                             }
+                if len(task['file']) > 0:
+                    print('################################## SEND  IMG ##################################')
+                    #Создаем отдельный процесс для отправки
+                    Process(target=job_tg_img, args=(temp_text,)).start()
+                    # изменяем
+                    update_status_spam_temp(task['id'], str(current_date))
 
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_2']==1) and (task['time_send_days_2'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
-
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_3']==1) and (task['time_send_days_3'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
-
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_4']==1) and (task['time_send_days_4'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
-
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_5']==1) and (task['time_send_days_5'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
-
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_6']==1) and (task['time_send_days_6'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
-
-        #    проверяем день недели                   проверяем время                   проверяем нужно ли выполнять     проверяем выполняли сегодня
-        if (task['days_7']==1) and (task['time_send_days_7'][:5]==now.strftime("%H:%M"))and int(task['status_spam'])==1 and str(task['status_spam_temp'])!=str(current_date):
-            # если нужно отправить только один раз
-            if int(task['status_spam_repeat'])==0:
-                update_status_spam(task['id'], 0)
-                print(f'spam disabled>>{task["id"]} ')
-            # изменяем для указания что мы сегодня уже отправляли это сообщения
-            update_status_spam_temp(task['id'], str(current_date))
-            if len(task['file']) > 0:
-                print('ОТПРАВКА ')
-                print('ОТПРАВКА c изображением')
-            else:
-                print('ОТПРАВКА ON IMG ')
+                else:
+                    # изменяем для указания что мы сегодня уже отправляли это сообщения
+                    print('################################## SEND not IMG ##################################')
+                    temp_text = {'text_mess': task['texts'],
+                                 'phon': task["account"],
+                                 'username': task['contact'],
+                                 }
+                    print(f'temp_text>>{temp_text}')
+                    Process(target=job_tg_text,args=(temp_text,)).start()
+                update_status_spam_temp(task['id'], str(current_date))
 
 
             #pass
@@ -182,5 +135,6 @@ def main():
 
 
 #    query = f"UPDATE 'spam_subscriber' SET status_spam = ? {conditions}"
-
-main()
+while True:
+    main()
+    time.sleep(1)

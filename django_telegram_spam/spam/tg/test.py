@@ -1,29 +1,10 @@
-#4607065001445
+# my_dict = {'days_1': 1, 'days_2': 0, 'days_3': 0, 'days_4': 0, 'days_5': 0, 'days_6': 0, 'days_7': 0}
+#
+# if 1 in my_dict.values():
+#     print("Хотя бы один ключ имеет значение 1")
+# else:
+#     print("Все ключи равны 0")
 
-import requests
 
-# Replace `1234567890123` with your barcode
-barcode = '5000159461122'
-
-# Query the Open Food Facts API
-response = requests.get(f'https://world.openfoodfacts.org/api/v0/product/{barcode}.json')
-
-# Parse the response and extract product details
-if response.status_code == 200:
-    data = response.json()
-    product_name = data.get('product', {}).get('product_name', 'Unknown')
-    ingredients = data.get('product', {}).get('ingredients_text', 'Unknown')
-    nutrition = data.get('product', {}).get('nutriments', {})
-    energy = nutrition.get('energy_value')
-    fat = nutrition.get('fat_value')
-    carbs = nutrition.get('carbohydrates_value')
-    protein = nutrition.get('proteins_value')
-
-    print(f'Product: {product_name}')
-    print(f'Ingredients: {ingredients}')
-    print(f'Energy: {energy} kJ')
-    print(f'Fat: {fat} g')
-    print(f'Carbohydrates: {carbs} g')
-    print(f'Protein: {protein} g')
-else:
-    print('Barcode not found.')
+for i in range(1, 8):
+    print(i)

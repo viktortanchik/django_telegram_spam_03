@@ -37,44 +37,40 @@ handle_uploaded_file(request.FILES['file'])
 
 
 
-def tel():
-    api_id = 13729328
-    api_hash = "9344d5d46317f096d8bde457e1a9bf53"
-    app = Client("6283834705843", api_id=api_id, api_hash=api_hash)
-    app.connect()
-    #time.sleep(2)
-    #app.send_message("674868256", str(text))
-    app.send_message("674868256", 'TEST')
-
-
-
-async def telega_text(text,phon,username):
+async def telega_text(temp_data):
     api_id = 16526653
     api_hash = "918872691e0a8ea8335cce787546eb3d"
-    phone='84922511526'
-    #84922511526
-    if phon=='0':
-        phone='6285776362281'
 
-    if phon=='1':
-        phone='84922511526'
+    phone = '447405665250'
+    # phone = '447535092381'
+    # phone = '447476782487'
+    # phone = '447476746907'
 
-    if phon=='2':
-        phone='6285298448807'
-    print(f'phon>>>{phon}   phone>>{phone}')
+    if temp_data['phon'] == '0':
+        phone = '447405665250'
 
-    app = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
+    if temp_data['phon'] == '1':
+        phone = '447535092381'
+
+    if temp_data['phon'] == '2':
+        phone = '447476782487'
+
+    if temp_data['phon'] == '3':
+        phone = '447476746907'
+    print(f'phon>>>{temp_data["phon"]}   phone>>{phone}')
+
+    client = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
     try:
-        await app.connect()
+        await client.connect()
         #await app.send_melsssage("674868256", str(text))
         print('SEND_TEXT')
-        await app.send_message(username, str(text))
-        await app.disconnect()
-        return schedule.CancelJob
+        await client.send_message(temp_data["username"],str( temp_data["text_mess"]))
+        await client.disconnect()
+        #return schedule.CancelJob
 
     except KeyError as er:
         print("Error>> ", er)
-        return schedule.CancelJob
+        #return schedule.CancelJob
 
         # async with Client("6283834705843", api_id, api_hash) as app:
     #     await app.send_message("674868256", str(text))
@@ -102,75 +98,36 @@ async def telega_img(temp_data):
     if temp_data['phon'] == '3':
         phone = '447476746907'
     try:
-        app = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
+        client = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
         print(f' Был выбран {phone}')
-        await app.connect()
+        await client.connect()
+
         #await app.send_melsssage("674868256", str(text))
         #await app.send_message(username, str(text))
-        await app.send_message(temp_data['username'], temp_data['text_mess'], file=temp_data['img_name'] )
+        #await client.send_message(temp_data['username'],message= temp_data['text_mess'], file=temp_data['img_name'] )
 
-        await app.disconnect()
+        await client.send_message(temp_data['username'],message= temp_data['text_mess'], file=temp_data['img_name'] )
+
+        await client.disconnect()
         #return schedule.CancelJob
 
     except KeyError as er:
         print("Error>> ", er)
-        return schedule.CancelJob
-
-        # async with Client("6283834705843", api_id, api_hash) as app:
-    #     await app.send_message("674868256", str(text))
-
-
-
-async def telega_text(temp_data):
-    print(f" TELEGRAM DATA >>>>>  {temp_data}")
-    api_id = 16526653
-    api_hash = "918872691e0a8ea8335cce787546eb3d"
-
-    phone = '447405665250'
-    # phone = '447535092381'
-    # phone = '447476782487'
-    # phone = '447476746907'
-
-    if temp_data['phon'] == '0':
-        phone = '447405665250'
-
-    if temp_data['phon'] == '1':
-        phone = '447535092381'
-
-    if temp_data['phon'] == '2':
-        phone = '447476782487'
-
-    if temp_data['phon'] == '3':
-        phone = '447476746907'
-    try:
-        app = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
-        print(f' Был выбран {phone}')
-        await app.connect()
-        #await app.send_melsssage("674868256", str(text))
-        #await app.send_message(username, str(text))
-        await app.send_message(temp_data['username'], temp_data['text_mess'] )
-
-        await app.disconnect()
         #return schedule.CancelJob
 
-    except KeyError as er:
-        print("Error>> ", er)
-        return schedule.CancelJob
-
         # async with Client("6283834705843", api_id, api_hash) as app:
     #     await app.send_message("674868256", str(text))
-
 
 
 
 
 def job_tg_img(name):
     asyncio.run(telega_img(name))
-    return schedule.CancelJob
+    #return schedule.CancelJob
 
 def job_tg_text(name):
     asyncio.run(telega_text(name))
-    return schedule.CancelJob
+    #return schedule.CancelJob
 
 def main_schedule_img(tepm_date,time_, text, phon, username,img):
 

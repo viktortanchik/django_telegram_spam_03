@@ -230,7 +230,8 @@ def spam_pro(request):
                 try:
                     # print(f'====>>{str(post.file)}')
                     # print(f'=len=>>{len(str(post.file))}')
-                    send_mess(post,data)
+                    #send_mess(post,data)
+                    print('Data save')
 
                 except:
                     # asyncio.run(telega_text(data["texts"], data["gender"], data["contact"]))
