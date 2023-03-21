@@ -1,0 +1,65 @@
+body {
+  background-color: #212525;
+  margin: 0; /* убираем отступы по краям */
+}
+
+html, body {
+  height: 100%; /* страница занимает всю высоту экрана */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* высота контейнера равна высоте экрана */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #fff;
+  color: #030303FF;
+}
+
+.header__left {
+  font-weight: bold;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+}
+
+.header__right a {
+  margin-left: 20px;
+  color: #030303;
+  text-decoration: none;
+}
+
+.header__right a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  font-size: 1.5em;
+  text-align: center;
+}
+.form-field {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}

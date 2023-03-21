@@ -23,3 +23,6 @@ app = TelegramClient(phone, api_id=api_id, api_hash=api_hash)
 app.connect()
 text='test'
 app.send_message('@viktortanchik', str(text))
+
+
+""

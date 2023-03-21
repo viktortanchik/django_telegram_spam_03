@@ -14,10 +14,13 @@ urlpatterns = [
 
     #path('success', success, name='success'),
     path('', views.index),
+    path('test_css', views.test_css),
     path('login/', views.user_login, name='login'),
     path(r'register/', views.register, name='register'),
     path(r'logout/', views.logout_view, name='logout'),
     #path(r'spam_pro/', views.spam_pro, name='spam_pro'),
+    #path(r'spam_list/<int:id>', views.user_subscribers, name='spam_list'),
+    path(r'subscriber_list', views.subscriber_list, name='subscriber_list'),
     path(r'spam_list/<int:id>', views.spam_list, name='spam_list'),
     path(r'spam_pro/', views.spam_pro, name='spam_pro'),
     path('user_settings/<int:id>', views.user_settings, name='user_settings'),

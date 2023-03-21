@@ -7,7 +7,7 @@ from multiprocessing import Process
 
 from .forms import *
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 ##################################################
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -98,28 +98,49 @@ def user_settings(request,id):
                       {'form':form,
                       'news_show':news_show,}
                       )
+#
 
-
-def spam_list(request,id):
-    news_show = Subscriber.objects.get(pk=id)
-    form = SubscriberForm(instance=news_show)
+def spam_list(request, id):
+    subscriber = get_object_or_404(Subscriber, id=id)
     if request.user.is_authenticated:
         if request.method == "POST":
-            form = SubscriberForm(request.POST, request.FILES or None, instance=news_show)
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save(update_fields=['text'])
+            texts = request.POST.get('texts')
+            status_spam = request.POST.get('status_spam')
+            Subscriber.objects.filter(id=id).update(texts=texts, status_spam=status_spam)
             return redirect('/')
+        else:
+            form = SubscriberForm(instance=subscriber)
+        return render(request, 'spam/spam_list.html', {'form': form, 'subscriber': subscriber})
+    else:
+        return redirect('login')
 
-    return render(request, 'spam/spam_pro.html',
-                      {'form':form,
-                      'news_show':news_show,}
-                      )
-
+def subscriber_list(request):
+    current_user = request.user
+    subscribers = Subscriber.objects.filter(user=current_user)
+    return render(request, 'spam/subscriber_list.html', {'subscribers': subscribers})
+#
+# def spam_list(request,id):
+#     #news_show = Subscriber.objects.get(pk=id)
+#     news_show = get_object_or_404(Subscriber, id=id)
+#     #subscriber = SubscriberForm(instance=news_show)
+#     subscriber = Subscriber(instance=news_show)
+#     if request.user.is_authenticated:
+#         if request.method == "POST":
+#             form = SubscriberForm(request.POST, request.FILES or None, instance=news_show)
+#             post = form.save(commit=False)
+#             post.user = request.user
+#             post.save(update_fields=['texts'])
+#             return redirect('/')
+#
+#     return render(request, 'spam/subscriber_list.html',
+#                       {'subscriber':subscriber,
+#                       'news_show':news_show,}
+#                       )
+# #
 
 def handle_uploaded_file(f):
-    #with open('/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/media/'+f.name, 'wb+') as destination:
-    with open('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/'+f.name, 'wb+') as destination:
+    with open('/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/media/'+f.name, 'wb+') as destination:
+    #with open('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/'+f.name, 'wb+') as destination:
         file_name=''
         for chunk in f.chunks():
             destination.write(chunk)
@@ -129,8 +150,8 @@ def handle_uploaded_file(f):
 
 def send_mess(post,data):
     if len(str(post.file)) > 0:
-        #img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(post.file)
-        img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(post.file)
+        img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(post.file)
+        #img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(post.file)
 
         if (data.get('days_1') != None):
             Process(target=main_schedule_img, args=(1, data['time_send_days_1'], data['texts'], data['account'], data['contact'], img,)).start()
@@ -221,7 +242,7 @@ def spam_pro(request):
             post = form.save(commit=False)
 
             if (data.get('days_1') != None) or( data.get('days_2') != None) or (data.get('days_3') != None) or (data.get('days_4') != None) or (data.get('days_5') != None) or (data.get('days_6') != None)or (data.get('days_7') != None):
-                print(f'data OK ===>{data}')#<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
+                #print(f'data OK ===>{data}')#<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
                 #print(f'data===>{data["date_send"]}<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
                 post.user = request.user
                 post.save()
@@ -231,7 +252,7 @@ def spam_pro(request):
                     # print(f'====>>{str(post.file)}')
                     # print(f'=len=>>{len(str(post.file))}')
                     #send_mess(post,data)
-                    print('Data save')
+                    print('Data savels')
 
                 except:
                     # asyncio.run(telega_text(data["texts"], data["gender"], data["contact"]))
@@ -262,7 +283,7 @@ def index(request):
     form = SubscriberForm(request.POST, request.FILES)
 
     if request.user.is_authenticated:
-        print(f'request.user.id---->>>{request.user.id}')
+        #print(f'request.user.id---->>>{request.user.id}')
         if request.method == "POST":
             pass
         return render(request,'spam/home.html', locals())
@@ -274,6 +295,8 @@ def index(request):
 
     #form = SubscriberForm(request.POST)
 
+def test_css(request):
+    return render(request, 'test_css.html')
 
 def user_login(request):
     if request.method == 'POST':
@@ -312,7 +335,7 @@ def register(request):
         user_form = UserRegistrationForm(request.POST)
         #form = SubscriberForm_test() # ТО что я хочу что бы создалосб в момент регистрации
         if user_form.is_valid():
-            print(f"user_form>>>>>>>>{user_form}")
+            #print(f"user_form>>>>>>>>{user_form}")
             # Create a new user object but avoid saving it yet
             new_user = user_form.save(commit=False)
             # Set the chosen password

@@ -4,12 +4,14 @@ import datetime
 import time
 from multiprocessing import Process
 from tg import job_tg_img,job_tg_text
+import pytz
 
-
+#print(pytz.all_timezones)
 # Подключаемся к базе данных
 def get_task():
     # Устанавливаем соединение с базой данных
     conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
     # Создаем объект-курсор для выполнения запросов
     cursor = conn.cursor()
     # Получаем содержимое таблицы spam_subscriber
@@ -24,6 +26,8 @@ def get_task():
 
 def update_status_spam(subscriber_id, status):
     conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+
     cursor = conn.cursor()
     cursor.execute(f"UPDATE spam_subscriber SET status_spam = '{status}' WHERE id = {subscriber_id}")
     conn.commit()
@@ -35,6 +39,8 @@ def update_status_spam(subscriber_id, status):
 def update_status_spam_temp(id, new_status):
     # открываем соединение с базой данных
     conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+
     c = conn.cursor()
 
     # обновляем значение столбца для заданного ряда
@@ -49,6 +55,8 @@ def update_status_spam_temp(id, new_status):
 def update_column_value(id, column_name, new_value):
     # открываем соединение с базой данных
     conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    # conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+
     c = conn.cursor()
 
     # обновляем значение столбца для заданного ряда
@@ -73,10 +81,16 @@ def main():
 
     tasks = get_task()
     #print(get_task())
+    #print(datetime.datetime.now())
     #Process(target=main_schedule_img, args=(1, data['time_send_days_1'], data['texts'], data['account'], data['contact'], img,)).start()
     for task in tasks:
+
         current_date = datetime.datetime.now().date()
-        now = datetime.datetime.now()
+        #now = datetime.datetime.now()
+        now = datetime.datetime.utcnow()
+        new_timezone = pytz.timezone('Europe/Kyiv')
+        now = now.replace(tzinfo=pytz.utc).astimezone(new_timezone)
+
         #print(task['time_send_days_3'][:5]  ,'  ',  now.strftime("%H:%M"))
         #print(f"file >> {task}")
         for day in range(1,8):
@@ -103,7 +117,7 @@ def main():
                              'img_name': img
                              }
                 if len(task['file']) > 0:
-                    print('################################## SEND  IMG ##################################')
+                    print(f'################################## SEND  IMG {task["id"]} ##################################')
                     #Создаем отдельный процесс для отправки
                     Process(target=job_tg_img, args=(temp_text,)).start()
                     # изменяем
@@ -111,7 +125,7 @@ def main():
 
                 else:
                     # изменяем для указания что мы сегодня уже отправляли это сообщения
-                    print('################################## SEND not IMG ##################################')
+                    print(f'################################## SEND not IMG {task["id"]} ##################################')
                     temp_text = {'text_mess': task['texts'],
                                  'phon': task["account"],
                                  'username': task['contact'],
@@ -135,6 +149,6 @@ def main():
 
 
 #    query = f"UPDATE 'spam_subscriber' SET status_spam = ? {conditions}"
-while True:
-    main()
-    time.sleep(1)
+# while True:
+#     main()
+#     time.sleep(1)

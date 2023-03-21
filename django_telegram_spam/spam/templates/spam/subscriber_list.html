@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Log-in{% endblock %}
+{% if request.user.is_authenticated %}
+{% block content %}
+  <div class="general-container">
+            <div class="container top-container">
+                <div class="row">
+                    <div class="col-5 offset-4">
+    <h1 style="color:#e1e1bb;" >Subscriber List</h1>
+    <ul>
+        {% for subscriber in subscribers %}
+            <li><a style="color:#e1e1bb;"href="{% url 'spam_list' subscriber.id %}">{{ subscriber.texts }} {{ subscriber.user }}</a></li>
+        {% endfor %}
+    </ul>
+
+                    </div>
+                    </div>
+                </div>
+      </div>
+            <a style="color:#e1e1bb;"  href="{% url 'logout' %} " >logout</a>
+
+{% endblock %}
+
+    {% endif %}
+

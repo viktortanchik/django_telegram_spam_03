@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	 {% if request.user.is_authenticated %}
+	<header class="header">
+		<div class="header__left">Artpetry</div>
+		<nav class="header__right">
+			<a href="/">Главная</a>
+			<a href="#">Инструкция</a>
+			<a href="{% url 'subscriber_list' %}">{{ request.user.username }}</a>
+		</nav>
+	</header>
+	    {% else %}
+		<header class="header">
+		<div class="header__left">Artpetry</div>
+		<nav class="header__right">
+			<a href="/">Главная</a>
+			<a href="#">Инструкция</a>
+			<a href="{% url 'login' %}">Авторизация</a>
+		</nav>
+	</header>
+	    {% endif %}
+
+
+</head>
+<body>
+
+	<div class="container">
+    {% block content %}
+    {% endblock %}
+	</div>
+
+
+</body>
+</html>
