@@ -8,6 +8,9 @@ from multiprocessing import Process
 from .forms import *
 from django.http import HttpResponse
 from django.shortcuts import render, redirect,get_object_or_404
+
+from tronpy import Tron
+from tronpy.exceptions import AddressNotFound
 ##################################################
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -21,7 +24,7 @@ from django.views.generic.edit import UpdateView
 from django.contrib import messages
 
 #########################
-from .create_wallet import create_wallet
+from .create_wallet import create_wallet,check_balance
 
 #sudo fuser -k 8000/tcp
 
@@ -44,6 +47,17 @@ def get_wallet(request):
             print(f'form--->{news_show.wallet}')
             print(f'form LEN--->{len(news_show.wallet)}')
             wallet = str(news_show.wallet)
+            balance=''
+            if len(wallet) > 1:
+                balance = check_balance(news_show.wallet)
+                if balance:
+                    User_settings.objects.filter(user=current_user).update(balance=balance)
+                else:
+                    balance='Adress not found..!'
+
+
+
+                    # return 'Adress not found..!'
 
             if request.method == "POST":
                 if len(wallet) < 1 or wallet == None:
@@ -62,7 +76,8 @@ def get_wallet(request):
                 # return redirect('/')
         return render(request, 'account/get_wallet.html',
                           {'form':form,
-                          'news_show':news_show,}
+                          'news_show':news_show,
+                           'balance':balance}
                           )
     else:
         return redirect('/login')

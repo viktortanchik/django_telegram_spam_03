@@ -8,7 +8,7 @@
 
     {% if request.user.is_authenticated %}
         <p style="color:#e1e1bb;" >wallet -->  {{ news_show.wallet }}</p>
-        <p style="color:#e1e1bb;" >balance -->  {{ news_show.balance }}</p>
+        <p style="color:#e1e1bb;" >balance -->  {{ balance }}</p>
 
                       {% csrf_token %}
 

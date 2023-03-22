@@ -1,4 +1,5 @@
 from tronpy import Tron
+from tronpy.exceptions import AddressNotFound
 
 
 
@@ -14,3 +15,17 @@ def create_wallet():
     hex_address = wallet['hex_address']
     public_key = wallet['public_key']
     return base58check_address,private_key,hex_address,public_key
+
+
+def check_balance(address):
+    try:
+        client = Tron()
+        wallet = client.generate_address()
+        balance=client.get_account_balance(address)
+        return balance
+    except AddressNotFound:
+        print('Adress not found..!')
+        return False
+        #return 'Adress not found..!'
+
+
