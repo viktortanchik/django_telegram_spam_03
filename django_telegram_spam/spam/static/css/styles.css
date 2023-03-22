@@ -1,20 +1,26 @@
+/* Устанавливаем фоновый цвет и шрифт */
 body {
   background-color: #212525;
-  margin: 0; /* убираем отступы по краям */
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
-html, body {
-  height: 100%; /* страница занимает всю высоту экрана */
+/* Устанавливаем высоту для html и body, чтобы контейнер растянулся на всю высоту */
+html,
+body {
+  height: 100%;
 }
 
+/* Создаем контейнер, который будет выравнивать элементы по центру */
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%; /* высота контейнера равна высоте экрана */
+  display: flex; /* задаем контейнеру flex-контейнером */
+  flex-direction: column; /* располагаем элементы по вертикали */
+  justify-content: center; /* выравниваем элементы по вертикали по центру */
+  align-items: center; /* выравниваем элементы по горизонтали по центру */
+  height: 100%; /* задаем высоту контейнера на всю высоту экрана */
 }
 
+/* Создаем заголовок, который будет содержать логотип и ссылки на страницы */
 .header {
   display: flex;
   align-items: center;
@@ -24,42 +30,85 @@ html, body {
   color: #030303FF;
 }
 
+/* Левая часть заголовка с логотипом */
 .header__left {
   font-weight: bold;
 }
 
+/* Правая часть заголовка со ссылками */
 .header__right {
   display: flex;
   align-items: center;
 }
 
+/* Стили для ссылок в правой части заголовка */
 .header__right a {
   margin-left: 20px;
   color: #030303;
   text-decoration: none;
 }
 
+/* Стили для наведения на ссылки в правой части заголовка */
 .header__right a:hover {
   text-decoration: underline;
 }
 
+/* Стили для заголовка h1 */
 h1 {
   font-size: 2em;
   margin-bottom: 0.5em;
+  color: #e1e1bb;
+  text-align: center;
 }
 
+/* Стили для обычного текста */
 p {
   font-size: 1.5em;
   text-align: center;
+  color: #e1e1bb;
 }
-.form-field {
-  font-size: 16px;
-  font-family: Arial, sans-serif;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #f0f0f0;
-  margin-bottom: 10px;
-  width: 100%;
-  box-sizing: border-box;
+
+/* Стили для формы */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* выравниваем форму по центру по горизонтали */
+  width: 100%; /* растягиваем форму на всю ширину родительского контейнера */
+  margin: 0; /* убираем отступы по бокам */
+  text-align: center; /* выравниваем текст внутри формы по центру */
+}
+
+/* Стили для поля ввода */
+input[type="text"],
+input[type="password"] {
+padding: 10px;
+margin: 10px 0;
+width: 100%; / растягиваем поле ввода на всю ширину формы */
+border: none;
+border-radius: 20px;
+}
+
+/* Стили для кнопки отправки формы */
+input[type="submit"] {
+background-color: #e1e1bb;
+color: #212525;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+/* Стили для ошибки валидации */
+.error-message {
+color: #ff0000;
+font-size: 0.8em;
+margin-top: -10px;
+margin-bottom: 10px;
+}
+
+/* Стили для успешной отправки формы */
+.success-message {
+color: #008000;
+font-size: 1.2em;
+margin-top: 10px;
 }

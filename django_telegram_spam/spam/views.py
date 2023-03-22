@@ -25,63 +25,48 @@ from .create_wallet import create_wallet
 
 #sudo fuser -k 8000/tcp
 
-##################################################
 
-# Create your views here.
-# def hotel_image_view(request):
-#     form = HotelForm(request.POST, request.FILES)
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             #pass
-#             form.save()
-#             #return redirect('success')
-#     else:
-#         #pass
-#         form = HotelForm()
-#     #return render(request, 'spam/hotel_image_form.html', {'form': form})
-#     return render(request,'spam/hotel_image_form.html', locals())
-
-# def user_s(request):
-#     return request.user.username
 def my_view(request):
     messages.success(request, 'This is a success message.')
     messages.warning(request, 'This is a warning message.')
     messages.error(request, 'This is an error message.')
 
 
-def get_wallet(request,id):
-    news_show = User_settings.objects.get(pk=id)
-    form = SubscriberForm_test( instance=news_show)
+def get_wallet(request):
+    # form = SubscriberForm_test( instance=news_show)
     if request.user.is_authenticated:
-        form = SubscriberForm_test(request.POST, request.FILES or None, instance=news_show)
-        print(f'form--->{news_show.wallet}')
-        wallet = str(news_show.wallet)
 
-        if request.method == "POST":
-            if len(wallet) < 1 or wallet == None:
-                print('Create Wallet')
-                base58check_address,private_key,hex_address,public_key = create_wallet()
-                post = form.save(commit=False)
-                post.user = request.user
-                post.wallet = base58check_address
-                post.private_key = private_key
-                post.hex_address = hex_address
-                post.public_key = public_key
-                post.save(update_fields=['wallet','private_key','hex_address','public_key'])
-                return redirect('/')
+        current_user = request.user
+        news_show = User_settings.objects.get(user=current_user)
+        #subscribers = User_settings.objects.filter(user=current_user)
+        if request.user.is_authenticated:
+            form = SubscriberForm_test(request.POST, request.FILES or None, instance=news_show)
+            print(f'form--->{news_show.wallet}')
+            print(f'form LEN--->{len(news_show.wallet)}')
+            wallet = str(news_show.wallet)
 
-            else:
-                print('error create wallet')
+            if request.method == "POST":
+                if len(wallet) < 1 or wallet == None:
+                    print('Create Wallet')
+                    base58check_address,private_key,hex_address,public_key = create_wallet()
+                    User_settings.objects.filter(user=current_user).update(wallet=base58check_address, private_key=private_key,hex_address=hex_address,public_key=public_key)
+                    return redirect('/')
+
+                else:
+                    print('error create wallet')
 
 
-            # post = form.save(commit=False)
-            # post.user = request.user
-            # post.save(update_fields=['text'])
-            # return redirect('/')
-    return render(request, 'account/get_wallet.html',
-                      {'form':form,
-                      'news_show':news_show,}
-                      )
+                # post = form.save(commit=False)
+                # post.user = request.user
+                # post.save(update_fields=['text'])
+                # return redirect('/')
+        return render(request, 'account/get_wallet.html',
+                          {'form':form,
+                          'news_show':news_show,}
+                          )
+    else:
+        return redirect('/login')
+
 
 
 def user_settings(request,id):
@@ -115,28 +100,17 @@ def spam_list(request, id):
         return redirect('login')
 
 def subscriber_list(request):
-    current_user = request.user
-    subscribers = Subscriber.objects.filter(user=current_user)
-    return render(request, 'spam/subscriber_list.html', {'subscribers': subscribers})
-#
-# def spam_list(request,id):
-#     #news_show = Subscriber.objects.get(pk=id)
-#     news_show = get_object_or_404(Subscriber, id=id)
-#     #subscriber = SubscriberForm(instance=news_show)
-#     subscriber = Subscriber(instance=news_show)
-#     if request.user.is_authenticated:
-#         if request.method == "POST":
-#             form = SubscriberForm(request.POST, request.FILES or None, instance=news_show)
-#             post = form.save(commit=False)
-#             post.user = request.user
-#             post.save(update_fields=['texts'])
-#             return redirect('/')
-#
-#     return render(request, 'spam/subscriber_list.html',
-#                       {'subscriber':subscriber,
-#                       'news_show':news_show,}
-#                       )
-# #
+    if request.user.is_authenticated:
+
+        current_user = request.user
+
+        subscribers = Subscriber.objects.filter(user=current_user)
+
+        return render(request, 'spam/subscriber_list.html', {'subscribers': subscribers})
+    else:
+
+        return redirect('/login')
+
 
 def handle_uploaded_file(f):
     with open('/home/viktortanchik/tg_dj_spam/django_telegram_spam_02/django_telegram_spam/media/'+f.name, 'wb+') as destination:
@@ -344,8 +318,6 @@ def register(request):
             new_user.save()
             # form.is_valid()
             # form.save() # В момент сохранения выбивает ошибку
-
-
             #return render(request, 'account/register_done.html', {'new_user': new_user})
             return redirect('/')
     else:

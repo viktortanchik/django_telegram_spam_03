@@ -13,13 +13,11 @@
         <form action="." method="post">
             <h1 style="color:#e1e1bb;"> username {{ form.username }}</h1>
 
-            <p>
              <h1 style="color:#e1e1bb;"> password {{ form.password }}</h1>
-            </p>
-            {% csrf_token %}
             <p><input type="submit" value="Log-in"></p>
+            <p><a  style="color:#e1e1bb;" href="{% url "register" %}">register here</a></p>
+            {% csrf_token %}
         </form>
-        <p><a  href="{% url "register" %}">register here</a></p>
 
     {% endif %}
 {% endblock %}

@@ -1,4 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'test_css.html' %}
+{% load static %}
+
 {% block title %}Log-in{% endblock %}
 {% if request.user.is_authenticated %}
 {% block content %}
@@ -9,7 +11,14 @@
     <h1 style="color:#e1e1bb;" >Subscriber List</h1>
     <ul>
         {% for subscriber in subscribers %}
-            <li><a style="color:#e1e1bb;"href="{% url 'spam_list' subscriber.id %}">{{ subscriber.texts }} {{ subscriber.user }}</a></li>
+           <li><a style="color:#e1e1bb;" href="{% url 'spam_list' subscriber.id %}">
+             <h1>{{ subscriber.texts }}
+             {% if subscriber.status_spam == '1' %}
+                  Включено
+                {% else %}
+                  Выключено
+             {% endif %}
+           </h1></a></li>
         {% endfor %}
     </ul>
 

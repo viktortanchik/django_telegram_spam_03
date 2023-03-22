@@ -13,7 +13,7 @@ from .views import *
 urlpatterns = [
 
     #path('success', success, name='success'),
-    path('', views.index),
+    path('', views.index,name='home'),
     path('test_css', views.test_css),
     path('login/', views.user_login, name='login'),
     path(r'register/', views.register, name='register'),
@@ -24,7 +24,8 @@ urlpatterns = [
     path(r'spam_list/<int:id>', views.spam_list, name='spam_list'),
     path(r'spam_pro/', views.spam_pro, name='spam_pro'),
     path('user_settings/<int:id>', views.user_settings, name='user_settings'),
-    path('get_wallet/<int:id>', views.get_wallet, name='get_wallet'),
+    # path('get_wallet/<int:id>', views.get_wallet, name='get_wallet'),
+    path('get_wallet/', views.get_wallet, name='get_wallet'),
     path('home', views.get_wallet, name='get_wallet'),
 
 
