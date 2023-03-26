@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
 
-</body>
-</html>
+
+<p><h1  style="color:#e1e1bb;"> User is logged in :) )</h1></p>
+<p> <h1  style="color:#e1e1bb;"> Username -->  {{ request.user.username }}</h1></p>
+        <div class="general-container">
+            <div class="container top-container">
+                <div class="row">
+                    <div class="col-5 offset-4">
+                        <h3  style="color:#e1e1bb;">Введите текст для рассылки </h3>
+                        <div>
+                           <form action="" method="post" enctype="multipart/form-data">
+                               {% csrf_token %}
+                                        {% if mes %}
+                                            <script>
+                                                alert('Выбери хоть один день');
+                                            </script>
+                                        {% endif %}
+                               <textarea name="texts" cols="40" rows="10" required id="id_texts" {{form.texts }}></textarea>
+                                 <p>  </p>
+                               <a style="color:#e1e1bb;" >Введите номер получателя </a>
+                               <p><h3 style="color:#e1e1bb;">{{ form.contact }}</h3></p>
+                               <p><h3 style="color:#e1e1bb;">{{ form.account }}</h3></p>
+                               <p><h3 style="color:#e1e1bb;">{{ form.status_spam_repeat }}</h3></p>
+                                <p>{{ form.file }}</p>
+                               <p> <h3 style="color:#e1e1bb;"> {{ form.days_1 }} Monday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_1 }}></h3></p>
+                               <p><h3 style="color:#e1e1bb;"> {{ form.days_2 }} Tuesday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_2 }}></p></h3>
+                               <p><h3 style="color:#e1e1bb;">{{ form.days_3 }} Wednesday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_3 }}></p></h3>
+                               <p><h3 style="color:#e1e1bb;">{{ form.days_4 }} Thursday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_4 }}></p></h3>
+                               <p><h3 style="color:#e1e1bb;">{{ form.days_5 }} Friday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_5 }}></p></h3>
+                               <p><h3 style="color:#e1e1bb;">{{ form.days_6 }} Saturday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_6 }}></p></h3>
+                               <p><h3 style="color:#e1e1bb;">{{ form.days_7 }} Sunday <input type="time" value="09:00" class="form-row"{{ form.time_send_days_7 }}></p></h3>
+                                <p>  </p>
+                                <button type="submit" class="btn btn-primary">Send spam</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+
+{% endblock %}

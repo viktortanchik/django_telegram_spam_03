@@ -275,31 +275,17 @@ def spam_pro_wpa(request):
             post = form.save(commit=False)
 
             if (data.get('days_1') != None) or( data.get('days_2') != None) or (data.get('days_3') != None) or (data.get('days_4') != None) or (data.get('days_5') != None) or (data.get('days_6') != None)or (data.get('days_7') != None):
-                #print(f'data OK ===>{data}')#<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
-                #print(f'data===>{data["date_send"]}<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
                 post.user = request.user
                 post.save()
-                #print(f'POST ++++ >> {post.id}')
-                #print(f'POST ++++ >> {post.texts}')
-                # try:
-                #     # print(f'====>>{str(post.file)}')
-                #     # print(f'=len=>>{len(str(post.file))}')
-                #     #send_mess(post,data)
-                #     print('Data savels')
-                #
-                # except:
-                #     # asyncio.run(telega_text(data["texts"], data["gender"], data["contact"]))
-                #     print(' ERROR  send mess')
+
             else:
                 print('ERROR you dont ChOOse buttons ')
-                #messages.success(request, 'не один из элементов не был выбран ')
-                #return render(request, 'spam/spam_pro.html', locals())
                 mes= 'This is an error message.'
-                return render(request, 'spam/spam_pro.html', {'mes': mes,'form':form})
+                return render(request, 'spam/spam_pro_wpa.html', {'mes': mes,'form':form})
 
 
 
-        return render(request, 'spam/spam_pro.html', locals())
+        return render(request, 'spam/spam_pro_wpa.html', locals())
         # return render(request, 'base.html', {'form': form})
     else:
         # form = LoginForm(request.POST)
