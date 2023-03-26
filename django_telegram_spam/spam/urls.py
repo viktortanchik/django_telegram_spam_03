@@ -22,11 +22,12 @@ urlpatterns = [
     #path(r'spam_list/<int:id>', views.user_subscribers, name='spam_list'),
     path(r'subscriber_list', views.subscriber_list, name='subscriber_list'),
     path(r'spam_list/<int:id>', views.spam_list, name='spam_list'),
+    path(r'spam_pro_wpa/', views.spam_pro_wpa, name='spam_pro_wpa'),
     path(r'spam_pro/', views.spam_pro, name='spam_pro'),
     path('user_settings/<int:id>', views.user_settings, name='user_settings'),
     # path('get_wallet/<int:id>', views.get_wallet, name='get_wallet'),
     path('get_wallet/', views.get_wallet, name='get_wallet'),
-    path('home', views.get_wallet, name='get_wallet'),
+    #path('home', views.get_wallet, name='get_wallet'),
 
 
     #path(r'user_settings/', views.user_settings, name='user_settings'),

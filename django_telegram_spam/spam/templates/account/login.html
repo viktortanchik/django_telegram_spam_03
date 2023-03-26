@@ -1,7 +1,10 @@
 {% extends "test_css.html" %}
+{% load static %}
 
 {% block title %}Log-in{% endblock %}
 {% block content %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
     {% if request.user.is_authenticated %}
         <p style="color:#e1e1bb;" >User is logged in :)</p>
         <p style="color:#e1e1bb;" >Username -->  {{ request.user.username }}</p>

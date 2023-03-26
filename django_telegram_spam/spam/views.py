@@ -266,6 +266,50 @@ def spam_pro(request):
         return redirect('/login')
         # return HttpResponse('Invalid login')
 
+def spam_pro_wpa(request):
+    form = SubscriberForm_Wap(request.POST, request.FILES)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            filename = request.FILES
+            data = request.POST
+            post = form.save(commit=False)
+
+            if (data.get('days_1') != None) or( data.get('days_2') != None) or (data.get('days_3') != None) or (data.get('days_4') != None) or (data.get('days_5') != None) or (data.get('days_6') != None)or (data.get('days_7') != None):
+                #print(f'data OK ===>{data}')#<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
+                #print(f'data===>{data["date_send"]}<><><><> {data["time_send"]} {data["days_1"]} {data["days_2"]} {data["days_3"]}')
+                post.user = request.user
+                post.save()
+                #print(f'POST ++++ >> {post.id}')
+                #print(f'POST ++++ >> {post.texts}')
+                # try:
+                #     # print(f'====>>{str(post.file)}')
+                #     # print(f'=len=>>{len(str(post.file))}')
+                #     #send_mess(post,data)
+                #     print('Data savels')
+                #
+                # except:
+                #     # asyncio.run(telega_text(data["texts"], data["gender"], data["contact"]))
+                #     print(' ERROR  send mess')
+            else:
+                print('ERROR you dont ChOOse buttons ')
+                #messages.success(request, 'не один из элементов не был выбран ')
+                #return render(request, 'spam/spam_pro.html', locals())
+                mes= 'This is an error message.'
+                return render(request, 'spam/spam_pro.html', {'mes': mes,'form':form})
+
+
+
+        return render(request, 'spam/spam_pro.html', locals())
+        # return render(request, 'base.html', {'form': form})
+    else:
+        # form = LoginForm(request.POST)
+        # form = LoginForm()
+
+        #print('login>>>')
+        # return render(user_login,  locals())
+        return redirect('/login')
+        # return HttpResponse('Invalid login')
+
 
 def index(request):
 
@@ -320,22 +364,25 @@ def logout_view(request):
 
 
 def register(request):
+
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
+        #print(f'user_form>>{form}')
         #form = SubscriberForm_test() # ТО что я хочу что бы создалосб в момент регистрации
-        if user_form.is_valid():
-            #print(f"user_form>>>>>>>>{user_form}")
+        if form.is_valid():
+            #print(f"user_form>>>>>>>>{form}")
             # Create a new user object but avoid saving it yet
-            new_user = user_form.save(commit=False)
+            new_user = form.save(commit=False)
             # Set the chosen password
-            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.set_password(form.cleaned_data['password'])
             # Save the User object
             new_user.save()
+            print(f'new_user>>{new_user}')
             # form.is_valid()
             # form.save() # В момент сохранения выбивает ошибку
             #return render(request, 'account/register_done.html', {'new_user': new_user})
             return redirect('/')
     else:
-        user_form = UserRegistrationForm()
-    return render(request, 'account/register.html', {'user_form': user_form})
+        form = UserRegistrationForm()
+    return render(request, 'account/register.html', {'form': form})
 

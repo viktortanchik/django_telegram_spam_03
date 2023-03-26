@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Subscriber)
+admin.site.register(Subscriber_WAP)
 admin.site.register(User_settings)
 
 # class NewsContentAdmin(admin.ModelAdmin):

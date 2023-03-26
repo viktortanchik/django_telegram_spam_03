@@ -27,6 +27,30 @@ class SubscriberForm(forms.ModelForm):
         #'hotel_Main_Img':forms.ImageField()
 
 
+class SubscriberForm_Wap(forms.ModelForm):
+    days_1 = forms.BooleanField(required=False)
+    days_2 = forms.BooleanField(required=False)
+    days_3 = forms.BooleanField(required=False)
+    days_4 = forms.BooleanField(required=False)
+    days_5 = forms.BooleanField(required=False)
+    days_6 = forms.BooleanField(required=False)
+    days_7 = forms.BooleanField(required=False)
+
+    class Meta:
+        model = Subscriber_WAP
+        #exclude = ["texts","gender","contact","Main_Img","user"]
+        exclude = [""]
+
+        #fields = ['__all__']
+        widgets = {
+            'account': forms.RadioSelect(),
+            'status_spam': forms.RadioSelect(),
+            'status_spam_repeat': forms.RadioSelect(),
+
+        }
+        #'hotel_Main_Img':forms.ImageField()
+
+
 class SubscriberForm_test(forms.ModelForm):
     class Meta:
         model = User_settings

@@ -4,29 +4,33 @@
 {% block title %}Create an account{% endblock %}
 
 {% block content %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
     <h1 style="color:#e1e1bb;">Create an account</h1>
-    <p style="color:#e1e1bb;">Please, sign up using the following form:</p>
-   <form action="{% url 'home' %}" method="post">
-  <div class="form-group">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
-  </div>
-  <div class="form-group">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
-  </div>
-  <div class="form-group">
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-  </div>
-  <div class="form-group">
-    <label for="confirm-password">Confirm Password:</label>
-    <input type="password" id="confirm-password" name="confirm-password">
-  </div>
-  <button type="submit">Submit</button>
-             {% csrf_token %}
-
-</form>
-
-
+    <p style="color:#e1e1bb;" >Please, sign up using the following form:</p>
+<form action="." method="post" style="color:#e1e1bb;">
+        <p>
+    <label for="id_username">Username:</label>
+    <input type="text" name="username" maxlength="150" required="" id="id_username">
+  </p>
+  <p>
+    <label for="id_first_name">First name:</label>
+    <input type="text" name="first_name" maxlength="150" id="id_first_name">
+  </p>
+  <p>
+    <label for="id_email">Email address:</label>
+    <input type="email" name="email" maxlength="254" id="id_email">
+  </p>
+  <p>
+    <label for="id_password">Password:</label>
+    <input type="password" name="password" required="" id="id_password">
+  </p>
+  <p>
+    <label for="id_password2">Repeat password:</label>
+    <input type="password" name="password2" required="" id="id_password2">
+  </p>
+        <input type="hidden" name="csrfmiddlewaretoken">
+        <p><input type="submit" value="Create my account" style="color:#e1e1bb;"></p>
+        {% csrf_token %}
+    </form>
 {% endblock %}

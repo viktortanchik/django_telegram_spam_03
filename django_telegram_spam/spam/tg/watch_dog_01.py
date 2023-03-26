@@ -10,8 +10,8 @@ import pytz
 # Подключаемся к базе данных
 def get_task():
     # Устанавливаем соединение с базой данных
-    conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
-    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
     # Создаем объект-курсор для выполнения запросов
     cursor = conn.cursor()
     # Получаем содержимое таблицы spam_subscriber
@@ -25,8 +25,8 @@ def get_task():
 #изменения значения в базе
 
 def update_status_spam(subscriber_id, status):
-    conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
-    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
 
     cursor = conn.cursor()
     cursor.execute(f"UPDATE spam_subscriber SET status_spam = '{status}' WHERE id = {subscriber_id}")
@@ -38,8 +38,8 @@ def update_status_spam(subscriber_id, status):
 
 def update_status_spam_temp(id, new_status):
     # открываем соединение с базой данных
-    conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
-    #conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
 
     c = conn.cursor()
 
@@ -54,8 +54,8 @@ def update_status_spam_temp(id, new_status):
 
 def update_column_value(id, column_name, new_value):
     # открываем соединение с базой данных
-    conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
-    # conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
+    #conn = sqlite3.connect('/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/db.sqlite3')
+    conn = sqlite3.connect('/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/db.sqlite3')
 
     c = conn.cursor()
 
@@ -68,6 +68,7 @@ def update_column_value(id, column_name, new_value):
     # закрываем соединение с базой данных
     conn.close()
 #update_column_value(7,'days_5',0)
+
 def main():
     # создаем объект datetime для текущей даты
     today = datetime.datetime.today()
@@ -109,8 +110,8 @@ def main():
                         update_status_spam(task['id'], 0)
                         print(f'spam disabled>>{task["id"]} ')
                 # изменяем для указания что мы сегодня уже отправляли это сообщения
-                #img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(task['file'])
-                img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(task['file'])
+                #img = '/home/viktor/PycharmProjects/Spam_TG_Django/django_telegram_spam/media/' + str(task['file'])
+                img = '/home/viktortanchik/django_telegram_spam_03/django_telegram_spam/media/' + str(task['file'])
                 temp_text = {'text_mess': task['texts'],
                              'phon': task["account"],
                              'username': task['contact'],
@@ -149,6 +150,6 @@ def main():
 
 
 #    query = f"UPDATE 'spam_subscriber' SET status_spam = ? {conditions}"
-# while True:
-#     main()
-#     time.sleep(1)
+while True:
+    main()
+    time.sleep(1)

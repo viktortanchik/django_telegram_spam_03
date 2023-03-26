@@ -80,6 +80,8 @@ form {
 
 /* Стили для поля ввода */
 input[type="text"],
+input[type="first_name"],
+input[type="email"],
 input[type="password"] {
 padding: 10px;
 margin: 10px 0;
